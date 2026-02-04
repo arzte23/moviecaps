@@ -1,0 +1,15 @@
+[project]
+name = "moviecaps"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=6.0.2",
+    "environs[django]>=14.5.0",
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.0",
+]
+
+[tool.ruff.lint]
+extend-select = ["I"]
