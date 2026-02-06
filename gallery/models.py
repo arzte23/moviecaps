@@ -1,0 +1,33 @@
+from django.db import models
+from taggit.managers import TaggableManager
+
+
+class Title(models.Model):
+    class Type(models.TextChoices):
+        MOVIE = "MOVIE", "Movie"
+        SERIES = "SERIES", "TV Show"
+
+    type = models.CharField(max_length=10, choices=Type, default=Type.MOVIE)
+    name = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, unique=True)
+    description = models.TextField(blank=True)
+    release_year = models.PositiveSmallIntegerField()
+    end_year = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        if self.end_year:
+            return f"{self.name} ({self.release_year} - {self.end_year})"
+        return f"{self.name} ({self.release_year})"
+
+
+class Screencap(models.Model):
+    title = models.ForeignKey(Title, on_delete=models.CASCADE, related_name="caps")
+    created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to="screencaps/")
+    tags = TaggableManager()
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Screencap from {self.title}"
