@@ -8,7 +8,6 @@ class ScreencapInline(admin.TabularInline):
 
 
 class TitleAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ["name", "release_year"]}
     inlines = [ScreencapInline]
 
 

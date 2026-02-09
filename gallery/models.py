@@ -1,5 +1,8 @@
+from autoslug import AutoSlugField
 from django.db import models
 from taggit.managers import TaggableManager
+
+from .utils import title_slug
 
 
 class Title(models.Model):
@@ -9,10 +12,10 @@ class Title(models.Model):
 
     type = models.CharField(max_length=10, choices=Type, default=Type.MOVIE)
     name = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250, unique=True)
     description = models.TextField(blank=True)
     release_year = models.PositiveSmallIntegerField()
     end_year = models.PositiveSmallIntegerField(blank=True, null=True)
+    slug = AutoSlugField(populate_from=title_slug, unique=True)
 
     def __str__(self):
         if self.end_year:
