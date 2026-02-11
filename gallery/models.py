@@ -26,7 +26,11 @@ class Title(models.Model):
 class Screencap(models.Model):
     title = models.ForeignKey(Title, on_delete=models.CASCADE, related_name="caps")
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to="screencaps/")
+    image = models.ImageField(
+        upload_to="screencaps/", width_field="width", height_field="height"
+    )
+    width = models.PositiveIntegerField(editable=False, null=True)
+    height = models.PositiveIntegerField(editable=False, null=True)
     tags = TaggableManager()
 
     class Meta:
