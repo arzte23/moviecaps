@@ -42,6 +42,7 @@ class GalleryViewsTests(TestCase):
         cls.screencap = Screencap.objects.create(
             title=cls.movie, image="screencaps/test.jpg", width=200, height=200
         )
+        cls.screencap.tags.add("horror", "christmas", "clown")
 
     def test_home_view(self):
         response = self.client.get(reverse("gallery:home"))
@@ -49,3 +50,17 @@ class GalleryViewsTests(TestCase):
         self.assertTemplateUsed("gallery/home.html")
         self.assertIn(self.screencap, response.context["screencaps"])
         self.assertContains(response, self.screencap.image.url)
+
+    def test_search_view_success(self):
+        response = self.client.get(reverse("gallery:search", query={"q": "horror"}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.screencap.image.url)
+
+    def test_search_view_no_results(self):
+        response = self.client.get(reverse("gallery:search", query={"q": "comedy"}))
+        self.assertEqual(len(response.context["screencaps"]), 0)
+
+    def test_search_view_empty_query(self):
+        response = self.client.get(reverse("gallery:search", query={"q": ""}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["screencaps"]), 0)
