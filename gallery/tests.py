@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 
 from .models import Screencap, Title
 
@@ -14,7 +15,7 @@ class GalleryModelsTests(TestCase):
             end_year=2025,
         )
         cls.screencap = Screencap.objects.create(
-            title=cls.movie, image="screencaps/test.jpg"
+            title=cls.movie, image="screencaps/test.jpg", width=200, height=200
         )
         cls.screencap.tags.add("horror", "christmas", "clown")
 
@@ -32,3 +33,19 @@ class GalleryModelsTests(TestCase):
         self.assertIn("clown", self.screencap.tags.names())
         self.assertEqual(str(self.screencap), "Screencap from Test Movie (2026)")
         self.assertIn(self.screencap, self.movie.caps.all())
+
+
+class GalleryViewsTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.movie = Title.objects.create(name="Test Movie", release_year=2026)
+        cls.screencap = Screencap.objects.create(
+            title=cls.movie, image="screencaps/test.jpg", width=200, height=200
+        )
+
+    def test_home_view(self):
+        response = self.client.get(reverse("gallery:home"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed("gallery/home.html")
+        self.assertIn(self.screencap, response.context["screencaps"])
+        self.assertContains(response, self.screencap.image.url)
