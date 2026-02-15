@@ -37,11 +37,35 @@
     <script type="module">
     import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
     import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js'
+    
     const lightbox = new PhotoSwipeLightbox({
       gallery: '#my-gallery',
-      children: 'a',
+      children: 'a.pswp-link',
       pswpModule: PhotoSwipe,
     });
+
+    lightbox.on('uiRegister', function() {
+      lightbox.pswp.ui.registerElement({
+        name: 'movie-link',
+        order: 9,
+        isCompound: false,
+        appendTo: 'wrapper',
+        html: '',
+        onInit: (el, pswp) => {
+          pswp.on('change', () => {
+            const currSlideElement = pswp.currSlide.data.element;
+            if (currSlideElement) {
+              const movieUrl = currSlideElement.getAttribute('data-movie-url');
+              el.innerHTML = `
+                <div style="position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 9999;">
+                  <a href="${movieUrl}" class="btn btn-primary shadow-lg">View Details</a>
+                </div>`;
+            }
+          });
+        }
+      });
+    });
+
     lightbox.init();
     </script>
 

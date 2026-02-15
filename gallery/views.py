@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
-from .models import Screencap
+from .models import Screencap, Title
 
 
 def home(request):
@@ -22,3 +22,8 @@ def search(request):
     return render(
         request, "gallery/search.html", {"screencaps": screencaps, "query": query}
     )
+
+
+def title_detail(request, slug):
+    title = get_object_or_404(Title.objects.prefetch_related("caps"), slug=slug)
+    return render(request, "gallery/title_detail.html", {"title": title})

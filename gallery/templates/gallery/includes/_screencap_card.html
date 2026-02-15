@@ -1,0 +1,9 @@
+<div class="col">
+  <a href="{{ screencap.image.url }}"
+    class="pswp-link"
+    data-pswp-width="{{ screencap.width }}"
+    data-pswp-height="{{ screencap.height }}"
+    data-movie-url="{% url 'gallery:title_detail' screencap.title.slug %}">
+  <img src="{{ screencap.image.url }}" class="img-thumbnail" alt="{{ screencap }}">
+  </a>
+</div>
