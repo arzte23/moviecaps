@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
 from .models import Screencap, Title
@@ -12,7 +13,11 @@ def search(request):
     query = request.GET.get("q")
     if query:
         screencaps = (
-            Screencap.objects.filter(tags__name__icontains=query)
+            Screencap.objects.filter(
+                Q(tags__name__icontains=query)
+                | Q(title__name__icontains=query)
+                | Q(title__description__icontains=query)
+            )
             .select_related("title")
             .distinct()
         )
