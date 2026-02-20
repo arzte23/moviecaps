@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
@@ -6,7 +7,17 @@ from .models import Screencap, Title
 
 def home(request):
     screencaps = Screencap.objects.select_related("title").all()
-    return render(request, "gallery/home.html", {"screencaps": screencaps})
+    paginator = Paginator(screencaps, 21)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    custom_range = paginator.get_elided_page_range(
+        page_obj.number, on_each_side=2, on_ends=1
+    )
+    return render(
+        request,
+        "gallery/home.html",
+        {"page_obj": page_obj, "custom_range": custom_range},
+    )
 
 
 def search(request):
