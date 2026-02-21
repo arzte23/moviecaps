@@ -48,7 +48,7 @@ class GalleryViewsTests(TestCase):
         response = self.client.get(reverse("gallery:home"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "gallery/home.html")
-        self.assertIn(self.screencap, response.context["screencaps"])
+        self.assertIn(self.screencap, response.context["page_obj"])
         self.assertContains(response, self.screencap.image.url)
 
     def test_search_view_success(self):
@@ -58,12 +58,12 @@ class GalleryViewsTests(TestCase):
 
     def test_search_view_no_results(self):
         response = self.client.get(reverse("gallery:search", query={"q": "comedy"}))
-        self.assertEqual(len(response.context["screencaps"]), 0)
+        self.assertEqual(len(response.context["page_obj"]), 0)
 
     def test_search_view_empty_query(self):
         response = self.client.get(reverse("gallery:search", query={"q": ""}))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context["screencaps"]), 0)
+        self.assertEqual(len(response.context["page_obj"]), 0)
 
     def test_title_detail_view_success(self):
         response = self.client.get(
