@@ -35,8 +35,25 @@ def search(request):
     else:
         screencaps = Screencap.objects.none()
 
+    paginator = Paginator(screencaps, 21)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    custom_range = paginator.get_elided_page_range(
+        page_obj.number, on_each_side=2, on_ends=1
+    )
+    query_params = request.GET.copy()
+    if "page" in query_params:
+        del query_params["page"]
+
     return render(
-        request, "gallery/search.html", {"screencaps": screencaps, "query": query}
+        request,
+        "gallery/search.html",
+        {
+            "query": query,
+            "page_obj": page_obj,
+            "custom_range": custom_range,
+            "extra_params": query_params.urlencode(),
+        },
     )
 
 
