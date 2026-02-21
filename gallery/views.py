@@ -42,4 +42,15 @@ def search(request):
 
 def title_detail(request, slug):
     title = get_object_or_404(Title.objects.prefetch_related("caps"), slug=slug)
-    return render(request, "gallery/title_detail.html", {"title": title})
+    screencaps = title.caps.all()
+    paginator = Paginator(screencaps, 21)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    custom_range = paginator.get_elided_page_range(
+        page_obj.number, on_each_side=2, on_ends=1
+    )
+    return render(
+        request,
+        "gallery/title_detail.html",
+        {"title": title, "page_obj": page_obj, "custom_range": custom_range},
+    )

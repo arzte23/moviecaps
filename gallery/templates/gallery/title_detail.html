@@ -5,9 +5,10 @@
   <h1>{{ title }}</h1>
   <p>{{ title.description }}</p>
   <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-5">
-    {% for screencap in title.caps.all %}
+    {% for screencap in page_obj %}
       {% include "gallery/includes/_screencap_card.html" %}
     {% endfor %}
   </div>
+  {% include "gallery/includes/_pagination.html" %}
 </div>
 {% endblock %}
