@@ -6,4 +6,12 @@
     data-movie-url="{% url 'gallery:title_detail' screencap.title.slug %}">
   <img src="{{ screencap.image.url }}" class="img-thumbnail" alt="{{ screencap }}">
   </a>
+  <div>
+    {% for tag in screencap.tags.all %}
+      <a href="/search/?q={{ tag.name }}" style="text-decoration:none">
+        <span class="badge rounded-pill text-bg-light border" 
+        style="font-size: 0.7rem;">#{{ tag.name }}</span>
+      </a>
+    {% endfor %}
+  </div>
 </div>
