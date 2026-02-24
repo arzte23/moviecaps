@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
+from taggit.models import Tag
 
 from .models import Screencap, Title
 
@@ -13,10 +14,22 @@ def home(request):
     custom_range = paginator.get_elided_page_range(
         page_obj.number, on_each_side=2, on_ends=1
     )
+    popular_tags = (
+        Tag.objects.filter(
+            taggit_taggeditem_items__content_type__model="screencap",
+            taggit_taggeditem_items__content_type__app_label="gallery",
+        )
+        .annotate(total=Count("taggit_taggeditem_items"))
+        .order_by("-total")[:10]
+    )
     return render(
         request,
         "gallery/home.html",
-        {"page_obj": page_obj, "custom_range": custom_range},
+        {
+            "page_obj": page_obj,
+            "custom_range": custom_range,
+            "popular_tags": popular_tags,
+        },
     )
 
 
