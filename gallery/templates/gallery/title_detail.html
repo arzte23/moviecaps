@@ -1,14 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container text-center my-5">
-  <h1>{{ title }}</h1>
-  <p>{{ title.description }}</p>
-  <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-5">
+<div class="container my-5">
+  <div class="row align-items-center mb-5">
+    <div class="col-md-4 mb-4 mb-md-0 text-center">
+      {% with first_screencap=page_obj.0 %}
+        {% if first_screencap %}
+          <img src="{{ first_screencap.image.url }}" class="img-fluid rounded shadow-lg" alt="{{ title }}">
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="col-md-8 text-md-start text-center">
+      <h1 class="display-4 fw-bold mb-3">{{ title }}</h1>
+      <p class="lead text-secondary" style="max-width: 700px;">{{ title.description }}</p>
+      <div class="mt-4">
+        <span class="badge bg-secondary">{{ title.get_type_display }}</span> </div>
+    </div>
+  </div>
+
+  <hr class="opacity-10 mb-5">
+
+  <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
     {% for screencap in page_obj %}
       {% include "gallery/includes/_screencap_card.html" %}
     {% endfor %}
   </div>
+
   {% include "gallery/includes/_pagination.html" %}
 </div>
 {% endblock %}
