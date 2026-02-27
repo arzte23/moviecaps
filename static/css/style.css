@@ -1,0 +1,50 @@
+body {
+    font-family: 'Inter', sans-serif !important;
+    letter-spacing: -0.01em;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-weight: 800;
+}
+
+.card-img-fixed {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.pagination-dark .page-link {
+    background-color: #1a1d20;
+    border-color: #373b3e;
+    color: #f8f9fa;
+}
+
+.pagination-dark .page-link:hover {
+    background-color: #373b3e;
+    color: #fff;
+}
+
+.pagination-dark .page-item.active .page-link {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    color: #212529;
+}
+
+.pagination-dark .page-item.disabled .page-link {
+    background-color: #1a1d20;
+    color: #6c757d;
+}
+
+main, .content-wrapper {
+    flex: 1;
+}
+
+.poster-img {
+    max-height: 500px;
+    width: auto;
+    object-fit: contain; 
+}
