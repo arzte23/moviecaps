@@ -2,12 +2,29 @@
 
 {% block content %}
 <div class="container text-center my-5">
-  <h1>Search Results for "{{ query }}"</h1>
-  <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-5">
-    {% for screencap in page_obj %}
-      {% include "gallery/includes/_screencap_card.html" %}
-    {% endfor %}
-  </div>
-  {% include "gallery/includes/_pagination.html" %}
+  {% if query %}
+    <h1>Search Results for "{{ query }}"</h1>
+    
+    {% if page_obj %}
+      <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-5">
+        {% for screencap in page_obj %}
+          {% include "gallery/includes/_screencap_card.html" %}
+        {% endfor %}
+      </div>
+      {% include "gallery/includes/_pagination.html" %}
+    {% else %}
+      <div class="mt-5">
+        <p class="lead">Nothing found for your request. Try another tag or keyword.</p>
+        <a href="{% url 'gallery:home' %}" class="btn btn-light mt-3">Back to Home</a>
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div class="mt-5">
+      <h1>Oops!</h1>
+      <p class="lead">It looks like you didn't enter anything in the search bar.</p>
+      <a href="{% url 'gallery:home' %}" class="btn btn-light mt-3">Browse Latest Screencaps</a>
+    </div>
+  {% endif %}
 </div>
 {% endblock %}
