@@ -17,6 +17,7 @@ class Title(models.Model):
     release_year = models.PositiveSmallIntegerField()
     end_year = models.PositiveSmallIntegerField(blank=True, null=True)
     slug = AutoSlugField(populate_from=title_slug, unique=True)
+    poster = models.ImageField(upload_to="posters/", blank=True, null=True)
 
     def __str__(self):
         if self.end_year:

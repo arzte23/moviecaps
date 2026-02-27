@@ -2,13 +2,17 @@
 
 {% block content %}
 <div class="container my-5">
-  <div class="row align-items-center mb-5">
+  <div class="row align-items-start mb-5">
     <div class="col-md-4 mb-4 mb-md-0 text-center">
-      {% with first_screencap=page_obj.0 %}
-        {% if first_screencap %}
-          <img src="{{ first_screencap.image.url }}" class="img-fluid rounded shadow-lg" alt="{{ title }}">
-        {% endif %}
-      {% endwith %}
+      {% if title.poster %}
+        <img src="{{ title.poster.url }}" class="img-fluid rounded shadow-lg poster-img" alt="{{ title }}">
+      {% else %}
+        {% with first_screencap=page_obj.0 %}
+          {% if first_screencap %}
+            <img src="{{ first_screencap.image.url }}" class="img-fluid rounded shadow-lg" alt="{{ title }}">
+          {% endif %}
+        {% endwith %}
+      {% endif %}
     </div>
 
     <div class="col-md-8 text-md-start text-center">
