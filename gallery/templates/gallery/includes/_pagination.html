@@ -1,5 +1,5 @@
 <nav aria-label="Page navigation" class="mt-5">
-  <ul class="pagination justify-content-center">
+  <ul class="pagination justify-content-center pagination-dark">
     {% if page_obj.has_previous %}
       <li class="page-item"><a class="page-link" 
         href="?{{ extra_params }}&page={{ page_obj.previous_page_number }}">Previous</a></li>

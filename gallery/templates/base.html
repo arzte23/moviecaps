@@ -22,6 +22,27 @@
           object-fit: cover;
           object-position: center;
         }
+        .pagination-dark .page-link {
+            background-color: #1a1d20;
+            border-color: #373b3e;
+            color: #f8f9fa;
+        }
+
+        .pagination-dark .page-link:hover {
+            background-color: #373b3e;
+            color: #fff;
+        }
+
+        .pagination-dark .page-item.active .page-link {
+            background-color: #f8f9fa;
+            border-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .pagination-dark .page-item.disabled .page-link {
+            background-color: #1a1d20;
+            color: #6c757d;
+        }
     </style>
   </head>
   <body>
@@ -75,7 +96,7 @@
               const movieUrl = currSlideElement.getAttribute('data-movie-url');
               el.innerHTML = `
                 <div style="position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 9999;">
-                  <a href="${movieUrl}" class="btn btn-primary shadow-lg">View Details</a>
+                  <a href="${movieUrl}" class="btn btn-light shadow-lg">View Details</a>
                 </div>`;
             }
           });
