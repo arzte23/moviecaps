@@ -7,7 +7,10 @@ from .models import Screencap, Title
 
 
 def home(request):
+    content_type = request.GET.get("type")
     screencaps = Screencap.objects.select_related("title").all()
+    if content_type:
+        screencaps = screencaps.filter(title__type=content_type.upper())
     paginator = Paginator(screencaps, 21)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -22,6 +25,10 @@ def home(request):
         .annotate(total=Count("taggit_taggeditem_items"))
         .order_by("-total")[:10]
     )
+    query_params = request.GET.copy()
+    if "page" in query_params:
+        del query_params["page"]
+
     return render(
         request,
         "gallery/home.html",
@@ -29,6 +36,7 @@ def home(request):
             "page_obj": page_obj,
             "custom_range": custom_range,
             "popular_tags": popular_tags,
+            "extra_params": query_params.urlencode(),
         },
     )
 
