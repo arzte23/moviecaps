@@ -3,7 +3,11 @@
 {% block content %}
 <div class="container text-center my-5">
   {% if query %}
-    <h1>Search Results for "{{ query }}"</h1>
+    <h1>Search Results for "{{ query }}" 
+      {% if request.GET.type == 'movie' %}in Movies
+      {% elif request.GET.type == 'series' %}in TV Shows
+      {% else %}in Movies and TV Shows{% endif %}
+    </h1>
     
     {% if page_obj %}
       <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-5">

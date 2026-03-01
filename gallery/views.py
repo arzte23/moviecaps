@@ -53,6 +53,9 @@ def search(request):
             .select_related("title")
             .distinct()
         )
+        content_type = request.GET.get("type")
+        if content_type and content_type != "all":
+            screencaps = screencaps.filter(title__type=content_type.upper())
     else:
         screencaps = Screencap.objects.none()
 

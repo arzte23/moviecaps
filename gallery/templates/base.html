@@ -30,7 +30,12 @@
             </li>
           </ul>
           <form class="d-flex" role="search" method="get" action="{% url 'gallery:search' %}">
-            <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" value="{{ query }}">
+            <select name="type" class="form-select form-select-sm me-2 bg-dark text-light border-secondary" style="width: auto;">
+              <option value="all">All</option>
+              <option value="movie" {% if request.GET.type == 'movie' %}selected{% endif %}>Movies</option>
+              <option value="series" {% if request.GET.type == 'series' %}selected{% endif %}>TV Shows</option>
+            </select>
             <button class="btn btn-outline-light" type="submit">Search</button>
           </form>
         </div>
