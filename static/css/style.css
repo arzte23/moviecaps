@@ -11,10 +11,10 @@ h1, h2, h3 {
 }
 
 .card-img-fixed {
-  height: 250px;
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .pagination-dark .page-link {
@@ -47,4 +47,30 @@ main, .content-wrapper {
     max-height: 500px;
     width: auto;
     object-fit: contain; 
+}
+
+.tag-custom {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #b0b0b0;
+    border: none !important;
+    transition: all 0.3s ease;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    padding: 5px 12px;
+}
+
+.tag-custom:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.tag-mini {
+    font-size: 0.65rem;
+    margin: 2px;
+}
+
+.tag-popular {
+    font-size: 0.9rem;
+    margin: 5px;
 }

@@ -1,16 +1,15 @@
-<div class="col">
+<div class="col text-center">
   <a href="{{ screencap.image.url }}"
     class="pswp-link"
     data-pswp-width="{{ screencap.width }}"
     data-pswp-height="{{ screencap.height }}"
     data-movie-url="{% url 'gallery:title_detail' screencap.title.slug %}">
-  <img src="{{ screencap.image.url }}" class="rounded card-img-fixed" alt="{{ screencap }}">
+  <img src="{{ screencap.image.url }}" class="rounded card-img-fixed mb-2" alt="{{ screencap }}">
   </a>
-  <div>
-    {% for tag in screencap.tags.all %}
-      <a href="/search/?q={{ tag.name }}" style="text-decoration:none">
-        <span class="badge rounded-pill text-bg-light border" 
-        style="font-size: 0.7rem;">#{{ tag.name }}</span>
+  <div class="d-flex flex-wrap justify-content-center">
+    {% for tag in screencap.tags.all|slice:":3" %}
+      <a href="/search/?q={{ tag.name }}" class="badge rounded-pill tag-custom tag-mini text-decoration-none">
+        #{{ tag.name }}
       </a>
     {% endfor %}
   </div>
