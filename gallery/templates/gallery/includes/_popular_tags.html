@@ -1,0 +1,10 @@
+<div class="mt-4">
+  <p class="text-secondary small text-uppercase fw-bold">Or try popular tags:</p>
+  <div class="d-flex flex-wrap justify-content-center">
+    {% for tag in popular_tags %}
+      <a href="/search/?q={{ tag.name }}" class="badge rounded-pill tag-custom tag-popular text-decoration-none">
+        #{{ tag.name }}
+      </a>
+    {% endfor %}
+  </div>
+</div>

@@ -69,6 +69,15 @@ def search(request):
     if "page" in query_params:
         del query_params["page"]
 
+    popular_tags = (
+        Tag.objects.filter(
+            taggit_taggeditem_items__content_type__model="screencap",
+            taggit_taggeditem_items__content_type__app_label="gallery",
+        )
+        .annotate(total=Count("taggit_taggeditem_items"))
+        .order_by("-total")[:10]
+    )
+
     return render(
         request,
         "gallery/search.html",
@@ -77,6 +86,7 @@ def search(request):
             "page_obj": page_obj,
             "custom_range": custom_range,
             "extra_params": query_params.urlencode(),
+            "popular_tags": popular_tags,
         },
     )
 

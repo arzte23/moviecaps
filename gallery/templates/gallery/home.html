@@ -3,16 +3,7 @@
 {% block content %}
 <div class="container text-center my-5">
   <h1>Latest Screencaps</h1>
-  <div class="my-4">
-    <h5 class="text-secondary mb-3">Popular Tags</h5>
-    <div class="d-flex flex-wrap justify-content-center">
-      {% for tag in popular_tags %}
-        <a href="/search/?q={{ tag.name }}" class="badge rounded-pill tag-custom tag-popular text-decoration-none">
-          #{{ tag.name }}
-        </a>
-      {% endfor %}
-    </div>
-  </div>
+  {% include "gallery/includes/_popular_tags.html" %}
   <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-2">
     {% for screencap in page_obj %}
       {% include "gallery/includes/_screencap_card.html" %}
