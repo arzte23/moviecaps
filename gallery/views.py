@@ -8,7 +8,9 @@ from .models import Screencap, Title
 
 def home(request):
     content_type = request.GET.get("type")
-    screencaps = Screencap.objects.select_related("title").all()
+    screencaps = (
+        Screencap.objects.select_related("title").prefetch_related("tags").all()
+    )
     if content_type:
         screencaps = screencaps.filter(title__type=content_type.upper())
     paginator = Paginator(screencaps, 21)
@@ -51,6 +53,7 @@ def search(request):
                 | Q(title__description__icontains=query)
             )
             .select_related("title")
+            .prefetch_related("tags")
             .distinct()
         )
         content_type = request.GET.get("type")
@@ -93,7 +96,7 @@ def search(request):
 
 def title_detail(request, slug):
     title = get_object_or_404(Title.objects.prefetch_related("caps"), slug=slug)
-    screencaps = title.caps.all()
+    screencaps = title.caps.prefetch_related("tags").all()
     paginator = Paginator(screencaps, 21)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
