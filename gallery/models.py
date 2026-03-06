@@ -11,7 +11,9 @@ class Title(models.Model):
         MOVIE = "MOVIE", "Movie"
         SERIES = "SERIES", "TV Show"
 
-    type = models.CharField(max_length=10, choices=Type, default=Type.MOVIE)
+    type = models.CharField(
+        max_length=10, choices=Type, default=Type.MOVIE, db_index=True
+    )
     name = models.CharField(max_length=250)
     description = models.TextField(blank=True)
     release_year = models.PositiveSmallIntegerField()

@@ -1,9 +1,9 @@
-from django.core.paginator import Paginator
-from django.db.models import Count, Q
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
-from taggit.models import Tag
 
 from .models import Screencap, Title
+from .services import get_popular_tags
+from .utils import paginate_queryset
 
 
 def home(request):
@@ -13,20 +13,11 @@ def home(request):
     )
     if content_type:
         screencaps = screencaps.filter(title__type=content_type.upper())
-    paginator = Paginator(screencaps, 21)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    custom_range = paginator.get_elided_page_range(
-        page_obj.number, on_each_side=2, on_ends=1
-    )
-    popular_tags = (
-        Tag.objects.filter(
-            taggit_taggeditem_items__content_type__model="screencap",
-            taggit_taggeditem_items__content_type__app_label="gallery",
-        )
-        .annotate(total=Count("taggit_taggeditem_items"))
-        .order_by("-total")[:10]
-    )
+
+    page_obj, custom_range = paginate_queryset(request, screencaps, 21)
+
+    popular_tags = get_popular_tags()
+
     query_params = request.GET.copy()
     if "page" in query_params:
         del query_params["page"]
@@ -62,24 +53,13 @@ def search(request):
     else:
         screencaps = Screencap.objects.none()
 
-    paginator = Paginator(screencaps, 21)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    custom_range = paginator.get_elided_page_range(
-        page_obj.number, on_each_side=2, on_ends=1
-    )
+    page_obj, custom_range = paginate_queryset(request, screencaps, 21)
+
     query_params = request.GET.copy()
     if "page" in query_params:
         del query_params["page"]
 
-    popular_tags = (
-        Tag.objects.filter(
-            taggit_taggeditem_items__content_type__model="screencap",
-            taggit_taggeditem_items__content_type__app_label="gallery",
-        )
-        .annotate(total=Count("taggit_taggeditem_items"))
-        .order_by("-total")[:10]
-    )
+    popular_tags = get_popular_tags()
 
     return render(
         request,
@@ -97,12 +77,8 @@ def search(request):
 def title_detail(request, slug):
     title = get_object_or_404(Title.objects.prefetch_related("caps"), slug=slug)
     screencaps = title.caps.prefetch_related("tags").all()
-    paginator = Paginator(screencaps, 21)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    custom_range = paginator.get_elided_page_range(
-        page_obj.number, on_each_side=2, on_ends=1
-    )
+    page_obj, custom_range = paginate_queryset(request, screencaps, 21)
+
     return render(
         request,
         "gallery/title_detail.html",
