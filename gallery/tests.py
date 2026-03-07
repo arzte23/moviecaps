@@ -94,7 +94,7 @@ class GalleryViewsTests(TestCase):
         self._assert_tag_in_popular(response, "horror")
 
     def test_search_with_type_filter(self):
-        url = reverse("gallery:search") + "?q=horror&type=series"
+        url = reverse("gallery:search", query={"q": "horror", "type": "series"})
         response = self.client.get(url)
         self.assertEqual(len(response.context["page_obj"]), 0)
 
