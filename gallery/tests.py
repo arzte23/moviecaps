@@ -76,3 +76,29 @@ class GalleryViewsTests(TestCase):
     def test_title_detail_view_404(self):
         response = self.client.get(reverse("gallery:title_detail", args=["wrong-slug"]))
         self.assertEqual(response.status_code, 404)
+
+    def test_home_view_filtering(self):
+        Title.objects.create(
+            name="Test Series", type=Title.Type.SERIES, release_year=2026
+        )
+        response = self.client.get(reverse("gallery:home", query={"type": "movie"}))
+        for cap in response.context["page_obj"]:
+            self.assertEqual(cap.title.type, Title.Type.MOVIE)
+
+    def test_popular_tags_in_context(self):
+        response = self.client.get(reverse("gallery:home"))
+        self._assert_tag_in_popular(response, "horror")
+        response = self.client.get(reverse("gallery:search", query={"q": ""}))
+        self._assert_tag_in_popular(response, "horror")
+        response = self.client.get(reverse("gallery:search", query={"q": "comedy"}))
+        self._assert_tag_in_popular(response, "horror")
+
+    def test_search_with_type_filter(self):
+        url = reverse("gallery:search") + "?q=horror&type=series"
+        response = self.client.get(url)
+        self.assertEqual(len(response.context["page_obj"]), 0)
+
+    def _assert_tag_in_popular(self, response, tag_name):
+        self.assertIn("popular_tags", response.context)
+        tags_in_context = [tag.name for tag in response.context["popular_tags"]]
+        self.assertIn(tag_name, tags_in_context)
