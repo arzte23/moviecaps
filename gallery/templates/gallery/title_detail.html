@@ -28,11 +28,8 @@
   <hr class="opacity-10 mb-5">
 
   <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-    {% for screencap in page_obj %}
-      {% include "gallery/includes/_screencap_card.html" %}
-    {% endfor %}
+    {% include "gallery/includes/_screencaps_loop.html" %}
   </div>
 
-  {% include "gallery/includes/_pagination.html" %}
 </div>
 {% endblock %}

@@ -1,9 +1,9 @@
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 
 from .models import Screencap, Title
 from .services import get_popular_tags
-from .utils import paginate_queryset
+from .utils import paginate_queryset, render_with_infinite_scroll
 
 
 def home(request):
@@ -22,16 +22,14 @@ def home(request):
     if "page" in query_params:
         del query_params["page"]
 
-    return render(
-        request,
-        "gallery/home.html",
-        {
-            "page_obj": page_obj,
-            "custom_range": custom_range,
-            "popular_tags": popular_tags,
-            "extra_params": query_params.urlencode(),
-        },
-    )
+    context = {
+        "page_obj": page_obj,
+        "custom_range": custom_range,
+        "popular_tags": popular_tags,
+        "extra_params": query_params.urlencode(),
+    }
+
+    return render_with_infinite_scroll(request, "gallery/home.html", context)
 
 
 def search(request):
@@ -61,17 +59,15 @@ def search(request):
 
     popular_tags = get_popular_tags()
 
-    return render(
-        request,
-        "gallery/search.html",
-        {
-            "query": query,
-            "page_obj": page_obj,
-            "custom_range": custom_range,
-            "extra_params": query_params.urlencode(),
-            "popular_tags": popular_tags,
-        },
-    )
+    context = {
+        "query": query,
+        "page_obj": page_obj,
+        "custom_range": custom_range,
+        "extra_params": query_params.urlencode(),
+        "popular_tags": popular_tags,
+    }
+
+    return render_with_infinite_scroll(request, "gallery/search.html", context)
 
 
 def title_detail(request, slug):
@@ -79,8 +75,6 @@ def title_detail(request, slug):
     screencaps = title.caps.prefetch_related("tags").all()
     page_obj, custom_range = paginate_queryset(request, screencaps, 21)
 
-    return render(
-        request,
-        "gallery/title_detail.html",
-        {"title": title, "page_obj": page_obj, "custom_range": custom_range},
-    )
+    context = {"title": title, "page_obj": page_obj, "custom_range": custom_range}
+
+    return render_with_infinite_scroll(request, "gallery/title_detail.html", context)

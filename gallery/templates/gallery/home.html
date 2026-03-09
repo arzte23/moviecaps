@@ -5,10 +5,7 @@
   <h1>Latest Screencaps</h1>
   {% include "gallery/includes/_popular_tags.html" %}
   <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-2">
-    {% for screencap in page_obj %}
-      {% include "gallery/includes/_screencap_card.html" %}
-    {% endfor %}
+    {% include "gallery/includes/_screencaps_loop.html" %}
   </div>
-  {% include "gallery/includes/_pagination.html" %}
 </div>
 {% endblock %}
