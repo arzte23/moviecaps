@@ -98,6 +98,17 @@ class GalleryViewsTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(len(response.context["page_obj"]), 0)
 
+    def test_home_infinite_scroll(self):
+        url = reverse("gallery:home")
+        response = self.client.get(url)
+        self.assertContains(response, "<h1>Latest Screencaps</h1>")
+        self.assertTemplateUsed(response, "gallery/home.html")
+        response = self.client.get(url, HTTP_HX_REQUEST="true")
+        self.assertNotContains(response, "</nav>")
+        self.assertContains(response, 'class="pswp-link"')
+        self.assertNotContains(response, "<h1>Latest Screencaps</h1>")
+        self.assertTemplateUsed(response, "gallery/includes/_screencaps_loop.html")
+
     def _assert_tag_in_popular(self, response, tag_name):
         self.assertIn("popular_tags", response.context)
         tags_in_context = [tag.name for tag in response.context["popular_tags"]]
