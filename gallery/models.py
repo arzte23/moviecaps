@@ -1,6 +1,8 @@
 from autoslug import AutoSlugField
 from django.db import models
 from django.utils.html import format_html
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 from taggit.managers import TaggableManager
 
 from .utils import title_slug
@@ -33,6 +35,12 @@ class Screencap(models.Model):
     image = models.ImageField(
         upload_to="screencaps/", width_field="width", height_field="height"
     )
+    image_thumbnail = ImageSpecField(
+        source="image",
+        processors=[ResizeToFit(width=800, upscale=False)],
+        format="JPEG",
+        options={"quality": 80},
+    )
     width = models.PositiveIntegerField(editable=False, null=True)
     height = models.PositiveIntegerField(editable=False, null=True)
     tags = TaggableManager()
@@ -48,7 +56,7 @@ class Screencap(models.Model):
             return format_html(
                 '<a href="{}"><img src="{}" style="width: 100px; height: auto; border-radius: 4px;" /></a>',
                 self.image.url,
-                self.image.url,
+                self.image_thumbnail.url,
             )
         return "No Image"
 

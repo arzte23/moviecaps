@@ -4,7 +4,7 @@
     data-pswp-width="{{ screencap.width }}"
     data-pswp-height="{{ screencap.height }}"
     data-movie-url="{% url 'gallery:title_detail' screencap.title.slug %}">
-  <img src="{{ screencap.image.url }}" class="rounded card-img-fixed mb-2" alt="{{ screencap }}">
+  <img src="{{ screencap.image_thumbnail.url }}" class="rounded card-img-fixed mb-2" alt="{{ screencap }}">
   </a>
   <div class="d-flex flex-wrap justify-content-center">
     {% for tag in screencap.tags.all|slice:":3" %}
