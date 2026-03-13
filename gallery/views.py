@@ -14,6 +14,9 @@ def home(request):
     if content_type:
         screencaps = screencaps.filter(title__type=content_type.upper())
 
+    if request.GET.get("sort") == "shuffle":
+        screencaps = screencaps.order_by("?")
+
     page_obj, custom_range = paginate_queryset(request, screencaps, 21)
 
     popular_tags = get_popular_tags()

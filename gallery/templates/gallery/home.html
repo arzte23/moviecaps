@@ -3,6 +3,15 @@
 {% block content %}
 <div class="container text-center my-5">
   <h1>Latest Screencaps</h1>
+  <div class="mb-4">
+    <a href="?{% if request.GET.type %}type={{ request.GET.type }}&{% endif %}sort=shuffle" 
+      class="btn {% if request.GET.sort == 'shuffle' %}btn-light{% else %}btn-outline-light{% endif %} rounded-pill shadow-sm">
+      <i class="bi bi-shuffle me-2"></i>Shuffle Deck
+    </a>
+    {% if request.GET.sort == 'shuffle' %}
+        <a href="?{% if request.GET.type %}type={{ request.GET.type }}{% endif %}" class="btn btn-link text-secondary text-decoration-none">Reset Shuffle</a>
+    {% endif %}
+  </div>
   {% include "gallery/includes/_popular_tags.html" %}
   <div id="my-gallery" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 mt-2">
     {% include "gallery/includes/_screencaps_loop.html" %}
