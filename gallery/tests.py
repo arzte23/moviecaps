@@ -1,10 +1,22 @@
-from django.test import TestCase
+import shutil
+import tempfile
+
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Screencap, Title
 
+MEDIA_ROOT = tempfile.mkdtemp()
 
+
+@override_settings(MEDIA_ROOT=MEDIA_ROOT)
 class GalleryModelsTests(TestCase):
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
+
     @classmethod
     def setUpTestData(cls):
         cls.movie = Title.objects.create(name="Test Movie", release_year=2026)
@@ -14,8 +26,16 @@ class GalleryModelsTests(TestCase):
             release_year=2021,
             end_year=2025,
         )
+        cls.small_gif = (
+            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04"
+            b"\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02"
+            b"\x02\x4c\x01\x00\x3b"
+        )
         cls.screencap = Screencap.objects.create(
-            title=cls.movie, image="screencaps/test.jpg", width=200, height=200
+            title=cls.movie,
+            image=SimpleUploadedFile(
+                "test.gif", cls.small_gif, content_type="image/gif"
+            ),
         )
         cls.screencap.tags.add("horror", "christmas", "clown")
 
@@ -35,12 +55,26 @@ class GalleryModelsTests(TestCase):
         self.assertIn(self.screencap, self.movie.caps.all())
 
 
+@override_settings(MEDIA_ROOT=MEDIA_ROOT)
 class GalleryViewsTests(TestCase):
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
+
     @classmethod
     def setUpTestData(cls):
         cls.movie = Title.objects.create(name="Test Movie", release_year=2026)
+        cls.small_gif = (
+            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04"
+            b"\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02"
+            b"\x02\x4c\x01\x00\x3b"
+        )
         cls.screencap = Screencap.objects.create(
-            title=cls.movie, image="screencaps/test.jpg", width=200, height=200
+            title=cls.movie,
+            image=SimpleUploadedFile(
+                "test.gif", cls.small_gif, content_type="image/gif"
+            ),
         )
         cls.screencap.tags.add("horror", "christmas", "clown")
 
@@ -108,6 +142,20 @@ class GalleryViewsTests(TestCase):
         self.assertContains(response, 'class="pswp-link"')
         self.assertNotContains(response, "<h1>Latest Screencaps</h1>")
         self.assertTemplateUsed(response, "gallery/includes/_screencaps_loop.html")
+
+    def test_home_shuffle_functional(self):
+        for _ in range(5):
+            Screencap.objects.create(
+                title=self.movie,
+                image=SimpleUploadedFile(
+                    "test.gif", self.small_gif, content_type="image/gif"
+                ),
+            )
+        response = self.client.get(reverse("gallery:home", query={"sort": "shuffle"}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["page_obj"]), 6)
+        self.assertContains(response, "btn-light rounded-pill shadow-sm")
+        self.assertContains(response, "Reset Shuffle")
 
     def _assert_tag_in_popular(self, response, tag_name):
         self.assertIn("popular_tags", response.context)
