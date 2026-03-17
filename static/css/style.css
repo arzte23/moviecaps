@@ -74,3 +74,9 @@ main, .content-wrapper {
     font-size: 0.9rem;
     margin: 5px;
 }
+
+.text-gradient {
+    background: linear-gradient(45deg, #ffffff, #888888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

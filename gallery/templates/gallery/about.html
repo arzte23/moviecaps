@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}About MovieCaps{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 fw-bold mb-4 text-gradient">MovieCaps</h1>
+            
+            <div class="lead fs-4 text-secondary mb-5">
+                <p>
+                    MovieCaps is a curated digital gallery designed for cinema lovers and 
+                    visual storytellers. It’s a space to explore the art of cinematography 
+                    through high-quality screencaps, organized by mood, style, and genre.
+                </p>
+                <p class="fs-5">
+                    Built with <strong class="fw-bold">Django 6.0</strong> and <strong class="fw-bold">HTMX</strong>, this project 
+                    focuses on a fast, seamless browsing experience and deep architectural 
+                    exploration of modern backend development.
+                </p>
+            </div>
+
+            <div class="card bg-dark border-secondary-subtle p-4 shadow-lg">
+                <h3 class="h5 mb-3">Open Source</h3>
+                <p class="text-secondary small">Interested in the code? Check out the repository on GitHub.</p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="#" 
+                       class="btn btn-outline-light btn-lg px-4 gap-3 rounded-pill" 
+                       target="_blank">
+                        <i class="bi bi-github me-2"></i>View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

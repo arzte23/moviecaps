@@ -19,8 +19,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
+    path(
+        "about/", TemplateView.as_view(template_name="gallery/about.html"), name="about"
+    ),
     path("admin/", admin.site.urls),
     path("", include("gallery.urls")),
 ]

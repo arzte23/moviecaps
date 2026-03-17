@@ -31,12 +31,8 @@
                 href="{% url 'gallery:home' %}?type=series">TV Shows</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" 
-                href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" 
-                href="#">Github</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
+                href="{% url 'about' %}">About</a>
             </li>
           </ul>
           <form class="d-flex" role="search" method="get" action="{% url 'gallery:search' %}">
