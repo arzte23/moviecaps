@@ -157,6 +157,13 @@ class GalleryViewsTests(TestCase):
         self.assertContains(response, "btn-light rounded-pill shadow-sm")
         self.assertContains(response, "Reset Shuffle")
 
+    def test_about_view(self):
+        url = reverse("about")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed("gallery/about.html")
+        self.assertContains(response, "GitHub")
+
     def _assert_tag_in_popular(self, response, tag_name):
         self.assertIn("popular_tags", response.context)
         tags_in_context = [tag.name for tag in response.context["popular_tags"]]
