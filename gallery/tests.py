@@ -164,6 +164,11 @@ class GalleryViewsTests(TestCase):
         self.assertTemplateUsed("gallery/about.html")
         self.assertContains(response, "GitHub")
 
+    def test_custom_404_template(self):
+        response = self.client.get("/this-is-a-fake-url-12345/")
+        self.assertEqual(response.status_code, 404)
+        self.assertTemplateUsed(response, "404.html")
+
     def _assert_tag_in_popular(self, response, tag_name):
         self.assertIn("popular_tags", response.context)
         tags_in_context = [tag.name for tag in response.context["popular_tags"]]
