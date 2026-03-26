@@ -1,3 +1,6 @@
+import random
+
+from django.db import connection
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
@@ -15,7 +18,12 @@ def home(request):
         screencaps = screencaps.filter(title__type=content_type.upper())
 
     if request.GET.get("sort") == "shuffle":
-        screencaps = screencaps.order_by("?")
+        if not request.session["seed"]:
+            request.session["seed"] = random.uniform(-1, 1)
+
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT setseed(%s);", [request.session["seed"]])
+            screencaps = list(screencaps.order_by("?"))
 
     page_obj, custom_range = paginate_queryset(request, screencaps, 21)
 
