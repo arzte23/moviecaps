@@ -156,6 +156,7 @@ class GalleryViewsTests(TestCase):
         self.assertEqual(len(response.context["page_obj"]), 6)
         self.assertContains(response, "btn-light rounded-pill shadow-sm")
         self.assertContains(response, "Reset Shuffle")
+        self.assertIn("seed", response.wsgi_request.session)
 
     def test_about_view(self):
         url = reverse("about")

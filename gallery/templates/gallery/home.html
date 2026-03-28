@@ -4,7 +4,7 @@
 <div class="container text-center my-5">
   <h1>Latest Screencaps</h1>
   <div class="mb-4">
-    <a href="?{% if request.GET.type %}type={{ request.GET.type }}&{% endif %}sort=shuffle" 
+    <a href="?{% if request.GET.type %}type={{ request.GET.type }}&{% endif %}sort=shuffle&new_seed=true" 
       class="btn {% if request.GET.sort == 'shuffle' %}btn-light{% else %}btn-outline-light{% endif %} rounded-pill shadow-sm">
       <i class="bi bi-shuffle me-2"></i>Shuffle Deck
     </a>

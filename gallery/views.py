@@ -18,18 +18,26 @@ def home(request):
         screencaps = screencaps.filter(title__type=content_type.upper())
 
     if request.GET.get("sort") == "shuffle":
-        if not request.session["seed"]:
-            request.session["seed"] = random.uniform(-1, 1)
+        seed = request.session.get("seed")
+        is_new_seed_requested = request.GET.get("new_seed")
+
+        if seed is None or is_new_seed_requested:
+            seed = random.uniform(-1, 1)
+            request.session["seed"] = seed
 
         with connection.cursor() as cursor:
-            cursor.execute("SELECT setseed(%s);", [request.session["seed"]])
-            screencaps = list(screencaps.order_by("?"))
+            cursor.execute("SELECT setseed(%s);", [seed])
+            screencaps = screencaps.order_by("?")
 
     page_obj, custom_range = paginate_queryset(request, screencaps, 21)
 
     popular_tags = get_popular_tags()
 
     query_params = request.GET.copy()
+
+    if "new_seed" in query_params:
+        del query_params["new_seed"]
+
     if "page" in query_params:
         del query_params["page"]
 
