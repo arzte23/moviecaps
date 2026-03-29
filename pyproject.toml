@@ -12,6 +12,7 @@ dependencies = [
     "django-imagekit>=6.1.0",
     "django-taggit>=6.1.0",
     "environs[django]>=14.5.0",
+    "gunicorn>=25.3.0",
     "pillow>=12.1.0",
     "pre-commit>=4.5.1",
     "psycopg2-binary>=2.9.11",
