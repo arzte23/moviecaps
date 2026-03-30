@@ -1,0 +1,30 @@
+# Git
+.git
+.gitignore
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# ruff
+.ruff_cache
+
+# environment variables
+.env
+
+# Django
+db.sqlite3
+media
+staticfiles/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
