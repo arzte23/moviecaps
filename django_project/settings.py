@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "cloudinary",
     "debug_toolbar",
-    "imagekit",
     "taggit",
     "accounts",
     "gallery",

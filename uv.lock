@@ -173,18 +173,6 @@ wheels = [
 ]
 
 [[package]]
-name = "django-appconf"
-version = "1.2.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/a2/e58bec8d7941b914af52a67c35b5709eceed2caa2848f28437f1666ed668/django_appconf-1.2.0.tar.gz", hash = "sha256:15a88d60dd942d6059f467412fe4581db632ef03018a3c183fb415d6fc9e5cec", size = 16127, upload-time = "2025-11-08T15:46:27.304Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/e6/4c34d94dfb74bbcbc489606e61f1924933de30d22c593dd1f429f35fbd7f/django_appconf-1.2.0-py3-none-any.whl", hash = "sha256:b81bce5ef0ceb9d84df48dfb623a32235d941c78cc5e45dbb6947f154ea277f4", size = 6500, upload-time = "2025-11-08T15:46:25.957Z" },
-]
-
-[[package]]
 name = "django-autoslug"
 version = "1.9.9"
 source = { registry = "https://pypi.org/simple" }
@@ -226,19 +214,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f1/4d/6acf660500d3d581bfc19460d9605cdf14c275640f35825da1329eaafafa/django_debug_toolbar-6.2.0.tar.gz", hash = "sha256:dc1c174d8fb0ea01435e02d9ceef735cf62daf37c1a6a5692d33b4127327679b", size = 313779, upload-time = "2026-01-20T12:38:25.268Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/88/04/e24611299a5ee0d4edfacf935b09cfb7d5d9cb653bd7b7883c3b43a6f90d/django_debug_toolbar-6.2.0-py3-none-any.whl", hash = "sha256:1575461954e6befa720e999dec13fe4f1cc8baf40b6c3ac2aec5f340c0f9c85f", size = 271354, upload-time = "2026-01-20T12:38:23.608Z" },
-]
-
-[[package]]
-name = "django-imagekit"
-version = "6.1.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django-appconf" },
-    { name = "pilkit" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/62/5f/229c58eefe2a9051bc17152179c46002b519371001ad15097a50226e1306/django_imagekit-6.1.0.tar.gz", hash = "sha256:60fa411eaf5d2d137e1d18d17b3004a6d17b482ca46b3e4b5121a5338a8fc9ff", size = 65550, upload-time = "2026-02-22T18:17:03.951Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/4f/9a3b70941982efb80fc59880a471cf26818879a00f930d80d82342cf63c1/django_imagekit-6.1.0-py3-none-any.whl", hash = "sha256:b735620d101821ae0789480b3945addfeb900f0d7653c7f377e0dc1ed63d7c39", size = 41061, upload-time = "2026-02-22T18:17:02.622Z" },
 ]
 
 [[package]]
@@ -331,7 +306,6 @@ dependencies = [
     { name = "django-autoslug" },
     { name = "django-cloudinary-storage" },
     { name = "django-debug-toolbar" },
-    { name = "django-imagekit" },
     { name = "django-taggit" },
     { name = "environs", extra = ["django"] },
     { name = "gunicorn" },
@@ -349,7 +323,6 @@ requires-dist = [
     { name = "django-autoslug", specifier = ">=1.9.9" },
     { name = "django-cloudinary-storage", specifier = ">=0.3.0" },
     { name = "django-debug-toolbar", specifier = ">=6.2.0" },
-    { name = "django-imagekit", specifier = ">=6.1.0" },
     { name = "django-taggit", specifier = ">=6.1.0" },
     { name = "environs", extras = ["django"], specifier = ">=14.5.0" },
     { name = "gunicorn", specifier = ">=25.3.0" },
@@ -376,18 +349,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/65/ee/299d360cdc32edc7d2cf530f3accf79c4fca01e96ffc950d8a52213bd8e4/packaging-26.0.tar.gz", hash = "sha256:00243ae351a257117b6a241061796684b084ed1c516a08c48a3f7e147a9d80b4", size = 143416, upload-time = "2026-01-21T20:50:39.064Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/b9/c538f279a4e237a006a2c98387d081e9eb060d203d8ed34467cc0f0b9b53/packaging-26.0-py3-none-any.whl", hash = "sha256:b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529", size = 74366, upload-time = "2026-01-21T20:50:37.788Z" },
-]
-
-[[package]]
-name = "pilkit"
-version = "3.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pillow" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b9/a5/bbe12d2c9dc06e29224c45a2cd7aa0ce923648588b6a15aadfee150bbd0c/pilkit-3.0.tar.gz", hash = "sha256:f6719e8cc0482e5447f5cb94f18b949d8e604ea9673a9b019c74d41b779e4eab", size = 402342, upload-time = "2023-09-27T22:47:18.638Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/ec/877b84b82cbcba6203e39d068cecfdbcfb61de69260cb851ea11be9b67f3/pilkit-3.0-py3-none-any.whl", hash = "sha256:fe1707b0411a1d0cbf9ad3986779fa5a346cec4582a188740924aa39f504d117", size = 20073, upload-time = "2023-09-27T22:47:16.285Z" },
 ]
 
 [[package]]
