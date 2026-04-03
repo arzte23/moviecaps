@@ -20,7 +20,7 @@ STORAGES = {
 
 
 @override_settings(MEDIA_ROOT=MEDIA_ROOT, STORAGES=STORAGES)
-class GalleryModelsTests(TestCase):
+class BaseGalleryTest(TestCase):
     @classmethod
     def tearDownClass(cls):
         shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
@@ -48,6 +48,8 @@ class GalleryModelsTests(TestCase):
         )
         cls.screencap.tags.add("horror", "christmas", "clown")
 
+
+class GalleryModelsTests(BaseGalleryTest):
     def test_title_model(self):
         self.assertEqual(self.movie.type.label, "Movie")
         self.assertEqual(self.movie.name, "Test Movie")
@@ -64,29 +66,7 @@ class GalleryModelsTests(TestCase):
         self.assertIn(self.screencap, self.movie.caps.all())
 
 
-@override_settings(MEDIA_ROOT=MEDIA_ROOT, STORAGES=STORAGES)
-class GalleryViewsTests(TestCase):
-    @classmethod
-    def tearDownClass(cls):
-        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
-        super().tearDownClass()
-
-    @classmethod
-    def setUpTestData(cls):
-        cls.movie = Title.objects.create(name="Test Movie", release_year=2026)
-        cls.small_gif = (
-            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04"
-            b"\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02"
-            b"\x02\x4c\x01\x00\x3b"
-        )
-        cls.screencap = Screencap.objects.create(
-            title=cls.movie,
-            image=SimpleUploadedFile(
-                "test.gif", cls.small_gif, content_type="image/gif"
-            ),
-        )
-        cls.screencap.tags.add("horror", "christmas", "clown")
-
+class GalleryViewsTests(BaseGalleryTest):
     def test_home_view(self):
         response = self.client.get(reverse("gallery:home"))
         self.assertEqual(response.status_code, 200)
