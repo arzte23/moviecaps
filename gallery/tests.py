@@ -9,8 +9,17 @@ from .models import Screencap, Title
 
 MEDIA_ROOT = tempfile.mkdtemp()
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
-@override_settings(MEDIA_ROOT=MEDIA_ROOT)
+
+@override_settings(MEDIA_ROOT=MEDIA_ROOT, STORAGES=STORAGES)
 class GalleryModelsTests(TestCase):
     @classmethod
     def tearDownClass(cls):
@@ -55,7 +64,7 @@ class GalleryModelsTests(TestCase):
         self.assertIn(self.screencap, self.movie.caps.all())
 
 
-@override_settings(MEDIA_ROOT=MEDIA_ROOT)
+@override_settings(MEDIA_ROOT=MEDIA_ROOT, STORAGES=STORAGES)
 class GalleryViewsTests(TestCase):
     @classmethod
     def tearDownClass(cls):
