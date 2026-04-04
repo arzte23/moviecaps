@@ -11,6 +11,6 @@ RUN uv sync --frozen --no-install-project
 
 COPY . .
 
-RUN uv run python manage.py collectstatic --noinput
+RUN SECRET_KEY=dummy_key_for_build uv run python manage.py collectstatic --noinput
 
 CMD ["uv", "run", "gunicorn", "django_project.wsgi:application", "--bind", "0.0.0.0:8000"]
