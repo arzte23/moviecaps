@@ -30,7 +30,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "cloudinary_storage",
     "cloudinary",
-    "debug_toolbar",
     "taggit",
     "accounts",
     "gallery",
@@ -53,7 +52,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -138,8 +136,6 @@ MEDIA_URL = "media/"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-INTERNAL_IPS = ["127.0.0.1"]
-
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -148,3 +144,21 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+if DEBUG:
+    import socket
+
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("whitenoise.middleware.WhiteNoiseMiddleware") + 1,
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    )
+    INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
+
+    try:
+        hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+        for ip in ips:
+            base_ip = ip.rsplit(".", 1)[0]
+            INTERNAL_IPS.append(f"{base_ip}.1")
+    except Exception:
+        pass
